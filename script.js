@@ -26,15 +26,17 @@ pizzaJson.map((item, index) => {
         c('.pizzaBig img').setAttribute('src', pizzaJson[key].img);
         c('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
         c('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
+
+        // Tamanho GRANDE (tamanho da pizza) fica selecionado por padrão
         c('.pizzaInfo--size.selected').classList.remove('selected');
-        cs('.pizzaInfo--size').forEach((size, sizeIndex) => { // Tamanho GRANDE (tamanho da pizza) fica selecionado por padrão
+        cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
             if (sizeIndex == 2) {
                 size.classList.add('selected');
             }
             size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex];
         });
-        c('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
 
+        c('.pizzaInfo--actualPrice').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
         c('.pizzaInfo--qt').innerHTML = modalQt;
 
         // Exibe o modal na tela
@@ -60,3 +62,25 @@ function closeModal() {     // função de FECHAR o modal
 cs('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach(item => {
     item.addEventListener('click', closeModal);
 })
+
+// DIMINUI quantidade de pizzas
+c('.pizzaInfo--qtmenos').addEventListener('click', () => {
+    if (modalQt > 1) {
+        modalQt--;
+        c('.pizzaInfo--qt').innerHTML = modalQt;
+    }
+})
+
+// AUMENTA quantidade de pizzas
+c('.pizzaInfo--qtmais').addEventListener('click', () => {
+    modalQt++;
+    c('.pizzaInfo--qt').innerHTML = modalQt;
+})
+
+// MARCA a opção de tamanho SELECIONADA 
+cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
+    size.addEventListener('click', (e) => {
+        c('.pizzaInfo--size.selected').classList.remove('selected');
+        size.classList.add('selected');
+    })
+});
