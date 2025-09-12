@@ -4,23 +4,28 @@ const c = (el) => document.querySelector(el);
 const cs = (el) => document.querySelectorAll(el);
 
 pizzaJson.map((item, index) => {
+    // Clona as estruturas (modelos) das pizzas e insere uma por uma (com suas próprias informações) na interface da página
     let pizzaItem = c('.models .pizza-item').cloneNode(true);
 
+    // Insere as informações de cada pizza
     pizzaItem.setAttribute('data-key', index);
     pizzaItem.querySelector('.pizza-item--img img').setAttribute("src", item.img);
     pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$ ${item.price.toFixed(2)}`;
     pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
     pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
+
+    // Evento de 'click' nas pizzas, para abrir o modal 
     pizzaItem.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
         let key = e.target.closest('.pizza-item').getAttribute('data-key');
         modalQt = 1;
 
+        // Insere as informações da cada pizza (modal)
         c('.pizzaBig img').setAttribute('src', pizzaJson[key].img);
         c('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
         c('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
         c('.pizzaInfo--size.selected').classList.remove('selected');
-        cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
+        cs('.pizzaInfo--size').forEach((size, sizeIndex) => { // Tamanho GRANDE (tamanho da pizza) fica selecionado por padrão
             if (sizeIndex == 2) {
                 size.classList.add('selected');
             }
@@ -30,6 +35,7 @@ pizzaJson.map((item, index) => {
 
         c('.pizzaInfo--qt').innerHTML = modalQt;
 
+        // Exibe o modal na tela
         c('.pizzaWindowArea').style.opacity = 0;
         c('.pizzaWindowArea').style.display = 'flex';
         setTimeout(() => {
