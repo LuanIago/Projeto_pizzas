@@ -1,4 +1,6 @@
+let cart = []
 let modalQt = 1;
+let modalKey = 0;
 
 const c = (el) => document.querySelector(el);
 const cs = (el) => document.querySelectorAll(el);
@@ -21,6 +23,7 @@ pizzaJson.map((item, index) => {
         e.preventDefault();
         let key = e.target.closest('.pizza-item').getAttribute('data-key');
         modalQt = 1;
+        modalKey = key;
 
         // Insere as informações da cada pizza (modal)
         c('.pizzaBig img').setAttribute('src', pizzaJson[key].img);
@@ -51,8 +54,10 @@ pizzaJson.map((item, index) => {
 })
 
 
-// Eventos do MODAL
-function closeModal() {     // função de FECHAR o modal
+// ---  EVENTOS DO MODAL:  --- //
+
+// função de FECHAR o modal
+function closeModal() {
     c('.pizzaWindowArea').style.opacity = 0;
     setTimeout(() => {
         c('.pizzaWindowArea').style.display = 'none';
@@ -83,4 +88,27 @@ cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
         c('.pizzaInfo--size.selected').classList.remove('selected');
         size.classList.add('selected');
     })
+});
+
+// Função para ADICIONAR pizzas no carrinho
+c('.pizzaInfo--addButton').addEventListener('click', () => {
+    // Armazena o tamanho das pizzas
+    let size = parseInt(c('.pizzaInfo--size.selected').getAttribute('data-key'));
+
+    // Identificador para que as pizzas do mesmo TIPO e TAMANHO fiquem JUNTAS
+    let identifier = `${pizzaJson[modalKey].id}'@'${size}`;
+    let key = cart.findIndex((item) => item.identifier == identifier);
+
+    if (key > -1) {
+        cart[key].qt += modalQt;
+    } else {
+        cart.push({
+            identifier,
+            id: pizzaJson[modalKey].id,
+            size,
+            qt: modalQt
+        });
+    }
+
+    closeModal();
 });
