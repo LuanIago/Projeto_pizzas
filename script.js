@@ -90,7 +90,7 @@ cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
     })
 });
 
-// Função para ADICIONAR pizzas no carrinho
+// Função para ADICIONAR pizzas no carrinho de compras
 c('.pizzaInfo--addButton').addEventListener('click', () => {
     // Armazena o tamanho das pizzas
     let size = parseInt(c('.pizzaInfo--size.selected').getAttribute('data-key'));
@@ -109,6 +109,20 @@ c('.pizzaInfo--addButton').addEventListener('click', () => {
             qt: modalQt
         });
     }
-
+    updateCart();
     closeModal();
 });
+
+// Função que atualiza o carrinho de compras
+function updateCart() {
+    if (cart.length > 0) {      // Se TIVER alguma pizza no carrinho, o mesmo APARECE!
+        c('aside').classList.add('show');
+        for (let i in cart) {
+            let pizzaItem = pizzaJson.find((item => item.id == cart[i].id));
+
+            console.log(pizzaItem);
+        }
+    } else {        // Se NÃO TIVER alguma pizza no carrinho, o mesmo DESAPARECE! 
+        c('aside').classList.remove('show');
+    }
+}
