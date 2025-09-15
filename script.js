@@ -90,7 +90,7 @@ cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
     })
 });
 
-// Função para ADICIONAR pizzas no carrinho de compras
+// Evento para ADICIONAR pizzas no carrinho de compras
 c('.pizzaInfo--addButton').addEventListener('click', () => {
     // Armazena o tamanho das pizzas
     let size = parseInt(c('.pizzaInfo--size.selected').getAttribute('data-key'));
@@ -113,8 +113,26 @@ c('.pizzaInfo--addButton').addEventListener('click', () => {
     closeModal();
 });
 
+
+// ---  EVENTOS DO CARRINHO DE COMPRAS:  --- //
+
+// Evento para EXIBIR o carrinho no MOBILE
+c('.menu-openner').addEventListener('click', () => {
+    if (cart.length > 0) {
+        c('aside').style.left = '0';
+    }
+})
+
+// Evento para FECHAR o carrinho no MOBILE
+c('.menu-closer').addEventListener('click', () => {
+    c('aside').style.left = '100vw';
+})
+
 // Função que atualiza o carrinho de compras
 function updateCart() {
+    // ATUALIZA e EXIBE o NÚMERO de TIPOS de pizzas no carrinho mobile
+    c('.menu-openner span').innerHTML = cart.length;
+
     if (cart.length > 0) {      // Se TIVER alguma pizza no carrinho, o mesmo APARECE!
         c('aside').classList.add('show');
         c('.cart').innerHTML = '';
@@ -175,5 +193,6 @@ function updateCart() {
 
     } else {        // Se NÃO TIVER alguma pizza no carrinho, o mesmo DESAPARECE! 
         c('aside').classList.remove('show');
+        c('aside').style.left = '100vw';
     }
 }
