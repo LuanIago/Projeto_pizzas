@@ -117,10 +117,35 @@ c('.pizzaInfo--addButton').addEventListener('click', () => {
 function updateCart() {
     if (cart.length > 0) {      // Se TIVER alguma pizza no carrinho, o mesmo APARECE!
         c('aside').classList.add('show');
+        c('.cart').innerHTML = '';
+
         for (let i in cart) {
             let pizzaItem = pizzaJson.find((item => item.id == cart[i].id));
 
-            console.log(pizzaItem);
+            // Clona as estruturas (modelos) dos itens do carrinho e insere uma por uma (com suas próprias informações) no ASIDE da página
+            let cartItem = c('.models .cart--item').cloneNode(true);
+
+            // Identifica o tamanho das pizzas por LETRAS [P, M, G]
+            let pizzaSizeName;
+            switch (cart[i].size) {
+                case 0:
+                    pizzaSizeName = 'P';
+                    break;
+                case 1:
+                    pizzaSizeName = 'M';
+                    break;
+                case 2:
+                    pizzaSizeName = 'G';
+                    break;
+            }
+            let pizzaName = `${pizzaItem.name} (${pizzaSizeName})`;
+
+            // Insere as informações de cada item do carrinho
+            cartItem.querySelector('img').src = pizzaItem.img;
+            cartItem.querySelector('.cart--item-nome').innerHTML = pizzaName;
+            cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt;
+
+            c('aside .cart').append(cartItem);
         }
     } else {        // Se NÃO TIVER alguma pizza no carrinho, o mesmo DESAPARECE! 
         c('aside').classList.remove('show');
